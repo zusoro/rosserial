@@ -169,10 +169,7 @@ class ServiceServer:
         req.serialize(data_buffer)
         self.response = None
         self.parent.send(self.id, data_buffer.getvalue())
-        print('CALLBACK start wait')
         while self.response is None:
-            time.sleep(0.01)
-            print('CALLBACK wait')
             pass
         return self.response
 
