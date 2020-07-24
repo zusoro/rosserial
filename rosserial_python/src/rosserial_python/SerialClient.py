@@ -170,12 +170,12 @@ class ServiceServer:
         self.response = None
         self.parent.send(self.id, data_buffer.getvalue())
         while self.response is None:
+            time.sleep(0.001)
             pass
         return self.response
 
     def handlePacket(self, data):
         """ Forward response to ROS network. """
-        print('handlePacket')
         r = self.mres()
         r.deserialize(data)
         self.response = r
@@ -529,8 +529,6 @@ class SerialClient(object):
                     self.lastsync_success = rospy.Time.now()
                     try:
                         self.callbacks[topic_id](msg)
-                        if topic_id != 130 and topic_id != 127:
-                            print(f'got packet, called cb {topic_id}')
                     except KeyError:
                         rospy.logerr("Tried to publish before configured, topic id %d" % topic_id)
                         self.requestTopics()
